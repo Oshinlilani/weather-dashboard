@@ -1,16 +1,95 @@
-# React + Vite
+# WeatherDash
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive weather dashboard built with React + Vite that integrates with the [Open-Meteo API](https://open-meteo.com) to display real-time and historical weather data.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Page 1 — Today (Current Weather)
+- Auto-detects location via browser GPS (falls back to IP geolocation instantly)
+- Select any past or current date via calendar picker
+- Toggle temperature between °C and °F
+- Displays individual weather variables:
+  - Temperature (Current, Min, Max)
+  - Precipitation, Relative Humidity, UV Index
+  - Sunrise & Sunset times (IST)
+  - Max Wind Speed, Precipitation Probability Max
+- Air Quality section: AQI, PM10, PM2.5, CO, NO₂, SO₂
+- Hourly charts for the selected date:
+  - Temperature, Relative Humidity, Precipitation
+  - Visibility, Wind Speed (10m), PM10 & PM2.5 (combined)
 
-## React Compiler
+### Page 2 — Historical (Up to 2 Years)
+- Select a custom date range (max 2 years)
+- Charts for daily trends:
+  - Temperature (Mean, Max, Min)
+  - Sunrise & Sunset
+  - Precipitation
+  - Max Wind Speed & Dominant Wind Direction
+  - PM10 & PM2.5
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Chart Features
+- Horizontal scrolling for dense datasets
+- Zoom in / Zoom out / Reset controls
+- Mobile responsive
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Package | Version |
+|---------|---------|
+| React | 18.3 |
+| Vite | 5.4 |
+| Tailwind CSS | 3.4 |
+| Recharts | 2.12 |
+| Axios | 1.6 |
+| react-router-dom | 6.26 |
+| react-datepicker | 7.5 |
+| date-fns | 3.6 |
+
+> No API key required — Open-Meteo is free and open.
+
+## Getting Started
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── ChartComponent.jsx   # Reusable scrollable/zoomable chart
+│   │   ├── WeatherCard.jsx      # Stat display card
+│   │   └── Loader.jsx           # Loading spinner
+│   ├── pages/
+│   │   ├── CurrentWeather.jsx   # Page 1 — today/single date
+│   │   └── Historical.jsx       # Page 2 — date range
+│   ├── services/
+│   │   └── api.js               # All Open-Meteo API calls + caching
+│   ├── App.jsx                  # Routing, GPS, layout
+│   └── main.jsx
+├── tailwind.config.js
+├── postcss.config.js
+└── vite.config.js
+```
+
+## API Sources
+
+| Data | Endpoint |
+|------|----------|
+| Current & forecast weather | `api.open-meteo.com/v1/forecast` |
+| Historical weather | `historical-forecast-api.open-meteo.com/v1/forecast` |
+| Air quality | `air-quality-api.open-meteo.com/v1/air-quality` |
+| IP geolocation (fallback) | `ipapi.co/json` |
+
+## Performance
+
+- IP geolocation fires immediately on load so the fetch starts before GPS resolves
+- GPS runs in parallel with a 5s timeout
+- API responses cached in `sessionStorage` for 5 minutes — revisiting the same date is instant
+- All API calls run in parallel via `Promise.allSettled`
