@@ -1,4 +1,4 @@
-# WeatherDash
+# Weather Dashboard
 
 A responsive weather dashboard built with React + Vite that integrates with the [Open-Meteo API](https://open-meteo.com) to display real-time and historical weather data.
 
@@ -55,7 +55,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open weather-dashboard-xi-red.vercel.app in your browser.
 
 ## Project Structure
 
