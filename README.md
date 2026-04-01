@@ -55,7 +55,7 @@ npm install
 npm run dev
 ```
 
-Open weather-dashboard-xi-red.vercel.app in your browser.
+Open [weather-dashboard-xi-red.vercel.app](https://vercel.com/oshin-lilanis-projects/weather-dashboard) in your browser.
 
 ## Project Structure
 
